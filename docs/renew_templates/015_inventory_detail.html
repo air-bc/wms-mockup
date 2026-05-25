@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ユーザー管理 | WMS</title>
+  <title>在庫明細（棚ロケ単位） | WMS</title>
   <link rel="stylesheet" href="../static/css/tokens.css">
   <link rel="stylesheet" href="../static/css/style.css">
   <link rel="stylesheet" href="../static/css/sticky-notes.css">
@@ -20,7 +20,7 @@
       </button>
       <div class="app-header-user-menu">
         <button class="app-header-user-btn" onclick="toggleUserMenu()" id="userMenuBtn" aria-haspopup="true" aria-expanded="false">
-          管理者
+          倉庫オペレーター
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
         </button>
         <div class="app-header-user-dropdown" id="userMenuDropdown" role="menu">
@@ -109,7 +109,7 @@
             在庫一覧
           </a>
           <div class="side-nav-sub-group">
-            <a href="015_inventory_detail.html" class="side-nav-sub-item">
+            <a aria-current="page" href="015_inventory_detail.html" class="side-nav-sub-item active">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
               在庫明細
             </a>
@@ -145,33 +145,54 @@
       <!-- メインコンテンツ -->
       <main class="app-main schedule-main" id="mainContent">
 
-        <div class="user-control-row">
-          <h1 class="page-header heading-xl" id="pageTitle">ユーザー管理</h1>
-          <a href="adm_002_user_form.html" class="btn btn-primary">ユーザーを追加</a>
+        <h1 class="page-header heading-xl">在庫明細（棚ロケ単位）</h1>
+
+        <!-- コントロール行 -->
+        <div class="history-control-row">
+          <div class="schedule-search-group">
+            <label for="inventorySearch" class="schedule-date-label">検索</label>
+            <input
+              type="text"
+              id="inventorySearch"
+              class="form-input schedule-search-input"
+              placeholder="キーワードを入力"
+              autocomplete="off"
+              aria-label="テーブル検索"
+            >
+          </div>
         </div>
 
-        <!-- ユーザー一覧テーブル -->
-        <section class="section-card" aria-labelledby="sectionUserList">
+        <!-- 在庫明細テーブル -->
+        <section class="section-card" aria-labelledby="sectionInventoryDetail">
           <div class="section-card-header">
-            <h2 class="heading-m" id="sectionUserList">ユーザー一覧</h2>
+            <div class="history-section-title">
+              <h2 class="heading-m" id="sectionInventoryDetail">在庫明細（棚ロケ単位）</h2>
+              <span id="inventoryDetailTotalCount" class="history-total-count"></span>
+            </div>
           </div>
           <hr class="section-divider">
           <div class="history-table-wrapper">
-            <table class="schedule-table" id="userTable" aria-label="ユーザー一覧">
+            <table class="schedule-table" id="inventoryDetailTable" aria-label="在庫明細">
               <thead>
                 <tr>
-                  <th scope="col">ログインID</th>
-                  <th scope="col">氏名</th>
-                  <th scope="col">権限</th>
-                  <th scope="col">ステータス</th>
+                  <th scope="col">棚ロケ</th>
+                  <th scope="col">商品コード</th>
+                  <th scope="col">商品名</th>
+                  <th scope="col">ロット番号</th>
+                  <th scope="col">数量</th>
+                  <th scope="col">単位区分</th>
+                  <th scope="col">特記事項</th>
                   <th scope="col">操作</th>
                 </tr>
               </thead>
-              <tbody id="userTableBody">
+              <tbody id="inventoryDetailTableBody">
               </tbody>
             </table>
           </div>
         </section>
+
+        <!-- ページネーション -->
+        <nav class="history-pagination" id="inventoryDetailPagination" aria-label="ページナビゲーション"></nav>
 
       </main>
     </div>
@@ -180,7 +201,8 @@
   <script src="../static/js/sticky-notes.js"></script>
   <script src="../static/js/main.js"></script>
   <script>
-    initUserList();
+    initInventoryDetailTable();
+    document.getElementById('inventorySearch').addEventListener('input', filterInventoryDetail);
   </script>
 </body>
 </html>

@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ユーザー管理 | WMS</title>
+  <title>入荷予定一覧 | WMS</title>
   <link rel="stylesheet" href="../static/css/tokens.css">
   <link rel="stylesheet" href="../static/css/style.css">
   <link rel="stylesheet" href="../static/css/sticky-notes.css">
 </head>
-<body>
+<body class="schedule-page">
   <div class="app-layout">
 
     <!-- グローバルナビゲーション -->
@@ -20,7 +20,7 @@
       </button>
       <div class="app-header-user-menu">
         <button class="app-header-user-btn" onclick="toggleUserMenu()" id="userMenuBtn" aria-haspopup="true" aria-expanded="false">
-          管理者
+          倉庫オペレーター
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
         </button>
         <div class="app-header-user-dropdown" id="userMenuDropdown" role="menu">
@@ -52,7 +52,7 @@
 
         <div class="side-nav-group">
           <p class="side-nav-group-label">入荷管理</p>
-          <a href="004_inbound_schedule_list.html" class="side-nav-item">
+          <a aria-current="page" href="004_inbound_schedule_list.html" class="side-nav-item active">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
             入荷予定一覧
           </a>
@@ -145,33 +145,183 @@
       <!-- メインコンテンツ -->
       <main class="app-main schedule-main" id="mainContent">
 
-        <div class="user-control-row">
-          <h1 class="page-header heading-xl" id="pageTitle">ユーザー管理</h1>
-          <a href="adm_002_user_form.html" class="btn btn-primary">ユーザーを追加</a>
+        <h1 class="page-header heading-xl">入荷予定一覧</h1>
+
+        <!-- コントロール行 -->
+        <div class="schedule-control-row">
+          <div class="schedule-date-group">
+            <label for="scheduleDate" class="schedule-date-label">対象日</label>
+            <input
+              type="date"
+              id="scheduleDate"
+              class="form-input date-input"
+              aria-label="対象日を選択"
+            >
+          </div>
+          <div class="schedule-search-group">
+            <label for="scheduleSearch" class="schedule-date-label">検索</label>
+            <input
+              type="text"
+              id="scheduleSearch"
+              class="form-input schedule-search-input"
+              placeholder="キーワードを入力"
+              autocomplete="off"
+              aria-label="テーブル検索"
+              oninput="filterInboundScheduleTable(this.value)"
+            >
+          </div>
+          <span id="scheduleUpdatedAt" class="schedule-updated-at body-s text-subtle"></span>
         </div>
 
-        <!-- ユーザー一覧テーブル -->
-        <section class="section-card" aria-labelledby="sectionUserList">
-          <div class="section-card-header">
-            <h2 class="heading-m" id="sectionUserList">ユーザー一覧</h2>
-          </div>
-          <hr class="section-divider">
-          <div class="history-table-wrapper">
-            <table class="schedule-table" id="userTable" aria-label="ユーザー一覧">
-              <thead>
-                <tr>
-                  <th scope="col">ログインID</th>
-                  <th scope="col">氏名</th>
-                  <th scope="col">権限</th>
-                  <th scope="col">ステータス</th>
-                  <th scope="col">操作</th>
-                </tr>
-              </thead>
-              <tbody id="userTableBody">
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <div class="schedule-sections">
+
+          <!-- 入荷予定情報 -->
+          <section class="section-card schedule-section-half" aria-labelledby="sectionInboundSchedule">
+            <div class="section-card-header">
+              <h2 class="heading-m" id="sectionInboundSchedule">入荷予定情報</h2>
+              <a href="#" class="btn btn-default" aria-label="PDFをダウンロード">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+                PDF ダウンロード
+              </a>
+            </div>
+            <hr class="section-divider">
+            <div class="schedule-table-wrapper">
+              <table class="schedule-table" id="inboundScheduleTable" aria-label="入荷予定情報">
+                <thead>
+                  <tr>
+                    <th scope="col">入荷予定日</th>
+                    <th scope="col">入荷日時</th>
+                    <th scope="col">伝票No</th>
+                    <th scope="col">商品コード</th>
+                    <th scope="col">商品名</th>
+                    <th scope="col">棚ロケーション</th>
+                    <th scope="col">入荷元</th>
+                    <th scope="col">数量</th>
+                    <th scope="col">単位区分</th>
+                    <th scope="col">ロット番号</th>
+                    <th scope="col">賞味期限</th>
+                    <th scope="col">特記事項</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2026/05/09</td>
+                    <td>10:00</td>
+                    <td>IN-2026-0509-001</td>
+                    <td>P-10001</td>
+                    <td>電動ドリル 18V</td>
+                    <td>A-01-01</td>
+                    <td>佐々木商事</td>
+                    <td style="text-align:right">100</td>
+                    <td>パレット</td>
+                    <td>LOT-2025-001</td>
+                    <td>2026/12/31</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>2026/05/09</td>
+                    <td>10:00</td>
+                    <td>IN-2026-0509-001</td>
+                    <td>P-10002</td>
+                    <td>充電バッテリーパック</td>
+                    <td>A-01-02</td>
+                    <td>佐々木商事</td>
+                    <td style="text-align:right">50</td>
+                    <td>ケース</td>
+                    <td>LOT-2025-002</td>
+                    <td>2026/06/30</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>2026/05/09</td>
+                    <td>13:00</td>
+                    <td>IN-2026-0509-002</td>
+                    <td>P-20031</td>
+                    <td>スチールラック 180cm</td>
+                    <td>B-02-01</td>
+                    <td>田中物産</td>
+                    <td style="text-align:right">200</td>
+                    <td>ピース</td>
+                    <td>LOT-2025-003</td>
+                    <td>‐</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>2026/05/09</td>
+                    <td>13:00</td>
+                    <td>IN-2026-0509-002</td>
+                    <td>P-30055</td>
+                    <td>作業用手袋 Lサイズ</td>
+                    <td>B-02-02</td>
+                    <td>田中物産</td>
+                    <td style="text-align:right">30</td>
+                    <td>ボール</td>
+                    <td>LOT-2025-004</td>
+                    <td>2027/03/15</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>2026/05/09</td>
+                    <td>15:00</td>
+                    <td>IN-2026-0509-003</td>
+                    <td>P-40012</td>
+                    <td>安全ヘルメット 白</td>
+                    <td>C-03-01</td>
+                    <td>鈴木運輸</td>
+                    <td style="text-align:right">80</td>
+                    <td>ケース</td>
+                    <td>‐</td>
+                    <td>2026/09/01</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>2026/05/09</td>
+                    <td>15:00</td>
+                    <td>IN-2026-0509-003</td>
+                    <td>P-50023</td>
+                    <td>防塵マスク 10枚入</td>
+                    <td>C-03-02</td>
+                    <td>鈴木運輸</td>
+                    <td style="text-align:right">150</td>
+                    <td>パレット</td>
+                    <td>LOT-2025-006</td>
+                    <td>‐</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>2026/05/09</td>
+                    <td>17:00</td>
+                    <td>IN-2026-0509-004</td>
+                    <td>P-60011</td>
+                    <td>パレット 1100×1100</td>
+                    <td>D-04-01</td>
+                    <td>伊藤商店</td>
+                    <td style="text-align:right">60</td>
+                    <td>ピース</td>
+                    <td>LOT-2025-007</td>
+                    <td>2026/11/30</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>2026/05/09</td>
+                    <td>17:00</td>
+                    <td>IN-2026-0509-004</td>
+                    <td>P-60012</td>
+                    <td>パレット 800×1200</td>
+                    <td>D-04-02</td>
+                    <td>伊藤商店</td>
+                    <td style="text-align:right">40</td>
+                    <td>‐</td>
+                    <td>LOT-2025-008</td>
+                    <td>2027/01/20</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+        </div>
 
       </main>
     </div>
@@ -180,7 +330,8 @@
   <script src="../static/js/sticky-notes.js"></script>
   <script src="../static/js/main.js"></script>
   <script>
-    initUserList();
+    initScheduleDate();
+    initScheduleUpdatedAt();
   </script>
 </body>
 </html>

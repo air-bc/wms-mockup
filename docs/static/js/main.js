@@ -2940,3 +2940,164 @@ function inventoryFormatDatetime(date) {
 if (document.getElementById('inventoryTableBody')) {
   initInventory();
 }
+
+/* ============================================================
+   SCR-003: 取引先定義
+   ============================================================ */
+
+var supplierData = [
+  { company: '株式会社山田商事',   kana: 'やまだしょうじ',        zip: '100-0001', address: '東京都千代田区千代田1-1-1',       tel: '03-1234-5678',  contact: '山田 太郎', hasConversion: true  },
+  { company: '田中物産株式会社',   kana: 'たなかぶっさん',        zip: '530-0001', address: '大阪府大阪市北区梅田2-2-2',       tel: '06-2345-6789',  contact: '田中 花子', hasConversion: false },
+  { company: '合同会社鈴木倉庫',   kana: 'すずきそうこ',          zip: '460-0001', address: '愛知県名古屋市中村区3-3-3',       tel: '052-345-6789',  contact: '',          hasConversion: false },
+  { company: '佐藤運輸株式会社',   kana: 'さとううんゆ',          zip: '810-0001', address: '福岡県福岡市博多区4-4-4',         tel: '092-456-7890',  contact: '佐藤 次郎', hasConversion: false },
+  { company: '高橋商店',           kana: 'たかはししょうてん',     zip: '060-0001', address: '北海道札幌市中央区5-5-5',         tel: '011-567-8901',  contact: '',          hasConversion: false },
+  { company: '株式会社伊藤製作所', kana: 'いとうせいさくしょ',     zip: '980-0001', address: '宮城県仙台市青葉区6-6-6',         tel: '022-678-9012',  contact: '伊藤 美穂', hasConversion: false },
+  { company: '渡辺食品株式会社',   kana: 'わたなべしょくひん',     zip: '220-0001', address: '神奈川県横浜市西区7-7-7',         tel: '045-789-0123',  contact: '渡辺 誠',   hasConversion: false },
+  { company: '中村流通合同会社',   kana: 'なかむらりゅうつう',     zip: '380-0001', address: '長野県長野市8-8-8',               tel: '026-890-1234',  contact: '',          hasConversion: false },
+  { company: '小林産業株式会社',   kana: 'こばやしさんぎょう',     zip: '600-0001', address: '京都府京都市下京区9-9-9',         tel: '075-901-2345',  contact: '小林 隆',   hasConversion: true  },
+  { company: '加藤物流株式会社',   kana: 'かとうぶつりゅう',       zip: '380-0002', address: '長野県松本市1-1-2',               tel: '0263-12-3456',  contact: '加藤 律子', hasConversion: false },
+  { company: '吉田商事株式会社',   kana: 'よしだしょうじ',         zip: '100-0002', address: '東京都千代田区丸の内1-2-3',       tel: '03-2345-6789',  contact: '',          hasConversion: false },
+  { company: '山本運輸株式会社',   kana: 'やまもとうんゆ',         zip: '530-0002', address: '大阪府大阪市中央区2-3-4',         tel: '06-3456-7890',  contact: '山本 健一', hasConversion: false },
+  { company: '松本倉庫株式会社',   kana: 'まつもとそうこ',         zip: '460-0002', address: '愛知県名古屋市東区3-4-5',         tel: '052-456-7890',  contact: '',          hasConversion: false },
+  { company: '井上商店',           kana: 'いのうえしょうてん',     zip: '810-0002', address: '福岡県福岡市中央区4-5-6',         tel: '092-567-8901',  contact: '井上 涼子', hasConversion: false },
+  { company: '木村製作所',         kana: 'きむらせいさくしょ',     zip: '060-0002', address: '北海道札幌市北区5-6-7',           tel: '011-678-9012',  contact: '',          hasConversion: false },
+  { company: '林物産株式会社',     kana: 'はやしぶっさん',         zip: '980-0002', address: '宮城県仙台市宮城野区6-7-8',       tel: '022-789-0123',  contact: '林 正樹',   hasConversion: false },
+  { company: '清水食品株式会社',   kana: 'しみずしょくひん',       zip: '220-0002', address: '神奈川県横浜市港北区7-8-9',       tel: '045-890-1234',  contact: '',          hasConversion: false },
+  { company: '斎藤流通株式会社',   kana: 'さいとうりゅうつう',     zip: '380-0003', address: '長野県上田市8-9-10',              tel: '0268-23-4567',  contact: '斎藤 博',   hasConversion: false },
+  { company: '山口産業株式会社',   kana: 'やまぐちさんぎょう',     zip: '750-0001', address: '山口県山口市1-2-3',               tel: '083-123-4567',  contact: '',          hasConversion: false },
+  { company: '前田物流株式会社',   kana: 'まえだぶつりゅう',       zip: '690-0001', address: '島根県松江市2-3-4',               tel: '0852-23-4567',  contact: '前田 由美', hasConversion: true  },
+  { company: '後藤商事株式会社',   kana: 'ごとうしょうじ',         zip: '450-0001', address: '愛知県名古屋市西区3-4-5',         tel: '052-567-8901',  contact: '',          hasConversion: false },
+  { company: '長谷川運輸株式会社', kana: 'はせがわうんゆ',          zip: '330-0001', address: '埼玉県さいたま市大宮区4-5-6',     tel: '048-678-9012',  contact: '長谷川 徹', hasConversion: false },
+  { company: '石川倉庫株式会社',   kana: 'いしかわそうこ',          zip: '920-0001', address: '石川県金沢市5-6-7',               tel: '076-789-0123',  contact: '',          hasConversion: false },
+  { company: '橋本商店',           kana: 'はしもとしょうてん',     zip: '630-0001', address: '奈良県奈良市6-7-8',               tel: '0742-12-3456',  contact: '橋本 典子', hasConversion: false },
+  { company: '村上製作所',         kana: 'むらかみせいさくしょ',   zip: '950-0001', address: '新潟県新潟市中央区7-8-9',         tel: '025-890-1234',  contact: '',          hasConversion: false }
+];
+
+var supplierCurrentPage = 1;
+var supplierPageSize = 20;
+var supplierFilteredData = supplierData.slice();
+
+function renderSupplierPage(page) {
+  var tbody = document.getElementById('supplierTableBody');
+  if (!tbody) return;
+  supplierCurrentPage = page;
+  var start = (page - 1) * supplierPageSize;
+  var rows = supplierFilteredData.slice(start, start + supplierPageSize);
+  tbody.innerHTML = rows.map(function(s) {
+    var convCell = s.hasConversion
+      ? '<span class="body-s" style="margin-right:var(--ds-space-100);">あり</span><button type="button" class="btn-edit" onclick="openConversionModal(\'' + s.company.replace(/'/g, "\\'") + '\')" aria-label="' + s.company + 'の変換定義を編集">編集</button>'
+      : '<span class="body-s text-subtle" style="margin-right:var(--ds-space-100);">なし</span><button type="button" class="btn btn-primary" style="height:1.5rem;font-size:0.75rem;padding:0 var(--ds-space-100);" onclick="openConversionModal(\'' + s.company.replace(/'/g, "\\'") + '\')" aria-label="' + s.company + 'の変換定義を登録">登録</button>';
+    return '<tr>' +
+      '<td>' + s.company + '</td>' +
+      '<td>' + s.kana + '</td>' +
+      '<td>〒' + s.zip + '</td>' +
+      '<td>' + s.address + '</td>' +
+      '<td>' + s.tel + '</td>' +
+      '<td>' + (s.contact || '<span class="text-subtle">—</span>') + '</td>' +
+      '<td style="white-space:nowrap;">' + convCell + '</td>' +
+      '</tr>';
+  }).join('');
+  renderSupplierPagination();
+}
+
+function renderSupplierPagination() {
+  var container = document.getElementById('paginationRow');
+  if (!container) return;
+  var totalPages = Math.ceil(supplierFilteredData.length / supplierPageSize);
+  container.innerHTML = '';
+  if (totalPages <= 1) return;
+
+  var prevBtn = document.createElement('button');
+  prevBtn.className = 'history-pagination-btn';
+  prevBtn.textContent = '< 前へ';
+  prevBtn.disabled = (supplierCurrentPage === 1);
+  prevBtn.setAttribute('aria-label', '前のページ');
+  prevBtn.addEventListener('click', function() { renderSupplierPage(supplierCurrentPage - 1); });
+  container.appendChild(prevBtn);
+
+  for (var i = 1; i <= totalPages; i++) {
+    (function(p) {
+      var btn = document.createElement('button');
+      btn.className = 'history-pagination-btn' + (p === supplierCurrentPage ? ' is-active' : '');
+      btn.textContent = p;
+      btn.setAttribute('aria-label', p + 'ページ');
+      if (p === supplierCurrentPage) btn.setAttribute('aria-current', 'page');
+      btn.addEventListener('click', function() { renderSupplierPage(p); });
+      container.appendChild(btn);
+    })(i);
+  }
+
+  var nextBtn = document.createElement('button');
+  nextBtn.className = 'history-pagination-btn';
+  nextBtn.textContent = '次へ >';
+  nextBtn.disabled = (supplierCurrentPage >= totalPages);
+  nextBtn.setAttribute('aria-label', '次のページ');
+  nextBtn.addEventListener('click', function() { renderSupplierPage(supplierCurrentPage + 1); });
+  container.appendChild(nextBtn);
+}
+
+function searchSuppliers() {
+  var keyword = (document.getElementById('supplierSearchInput').value || '').trim().toLowerCase();
+  supplierFilteredData = keyword
+    ? supplierData.filter(function(s) {
+        return s.company.toLowerCase().indexOf(keyword) !== -1 ||
+               s.kana.indexOf(keyword) !== -1 ||
+               s.contact.toLowerCase().indexOf(keyword) !== -1;
+      })
+    : supplierData.slice();
+  renderSupplierPage(1);
+}
+
+function uploadSupplierCsv() {
+  var fileInput = document.getElementById('csvFileInput');
+  var errorDiv  = document.getElementById('csvErrorMessage');
+  var successDiv = document.getElementById('csvSuccessMessage');
+  errorDiv.style.display = 'none';
+  successDiv.style.display = 'none';
+  if (!fileInput || !fileInput.files || !fileInput.files.length) {
+    errorDiv.textContent = 'ファイルを選択してください。';
+    errorDiv.style.display = '';
+    return;
+  }
+  successDiv.textContent = '25件登録しました。';
+  successDiv.style.display = '';
+  setTimeout(function() { successDiv.style.display = 'none'; }, 4000);
+}
+
+function openConversionModal(companyName) {
+  var title = document.getElementById('conversionModalTitle');
+  if (title) title.textContent = '変換定義 — ' + companyName;
+  var nameSpan = document.getElementById('convCsvSelectedName');
+  if (nameSpan) nameSpan.textContent = 'ファイルを選択してください (.csv)';
+  var fileInput = document.getElementById('convCsvFileInput');
+  if (fileInput) fileInput.value = '';
+  var errDiv = document.getElementById('convCsvErrorMessage');
+  if (errDiv) { errDiv.style.display = 'none'; errDiv.textContent = ''; }
+  document.getElementById('conversionModalOverlay').style.display = 'flex';
+  document.getElementById('conversionModalOverlay').dataset.company = companyName;
+}
+
+function closeConversionModal() {
+  document.getElementById('conversionModalOverlay').style.display = 'none';
+}
+
+function uploadConversionCsv() {
+  var fileInput = document.getElementById('convCsvFileInput');
+  var errDiv = document.getElementById('convCsvErrorMessage');
+  errDiv.style.display = 'none';
+  if (!fileInput || !fileInput.files || !fileInput.files.length) {
+    errDiv.textContent = 'ファイルを選択してください。';
+    errDiv.style.display = '';
+    return;
+  }
+  var companyName = document.getElementById('conversionModalOverlay').dataset.company;
+  var item = supplierData.find(function(s) { return s.company === companyName; });
+  if (item) item.hasConversion = true;
+  supplierFilteredData = supplierData.slice();
+  renderSupplierPage(supplierCurrentPage);
+  closeConversionModal();
+}
+
+if (document.getElementById('supplierTableBody')) {
+  renderSupplierPage(1);
+}

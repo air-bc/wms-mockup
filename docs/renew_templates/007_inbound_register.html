@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ユーザー管理 | WMS</title>
+  <title>入荷登録 | WMS</title>
   <link rel="stylesheet" href="../static/css/tokens.css">
   <link rel="stylesheet" href="../static/css/style.css">
   <link rel="stylesheet" href="../static/css/sticky-notes.css">
@@ -20,7 +20,7 @@
       </button>
       <div class="app-header-user-menu">
         <button class="app-header-user-btn" onclick="toggleUserMenu()" id="userMenuBtn" aria-haspopup="true" aria-expanded="false">
-          管理者
+          倉庫オペレーター
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
         </button>
         <div class="app-header-user-dropdown" id="userMenuDropdown" role="menu">
@@ -65,7 +65,7 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
               入荷予定確定
             </a>
-            <a href="007_inbound_register.html" class="side-nav-sub-item">
+            <a aria-current="page" href="007_inbound_register.html" class="side-nav-sub-item active">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
               入荷登録
             </a>
@@ -143,34 +143,95 @@
       </nav>
 
       <!-- メインコンテンツ -->
-      <main class="app-main schedule-main" id="mainContent">
+      <main class="app-main" id="mainContent">
 
-        <div class="user-control-row">
-          <h1 class="page-header heading-xl" id="pageTitle">ユーザー管理</h1>
-          <a href="adm_002_user_form.html" class="btn btn-primary">ユーザーを追加</a>
+        <h1 class="page-header heading-xl">入荷登録</h1>
+
+        <div class="warning-banner" role="note">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+          <p>この画面で入力したデータは<strong>確定情報</strong>として在庫へ直接反映されます。内容をよく確認してから登録してください。</p>
         </div>
 
-        <!-- ユーザー一覧テーブル -->
-        <section class="section-card" aria-labelledby="sectionUserList">
-          <div class="section-card-header">
-            <h2 class="heading-m" id="sectionUserList">ユーザー一覧</h2>
-          </div>
+        <!-- 機能1: 手動入力フォーム -->
+        <section class="section-card" aria-labelledby="sectionInboundRegister">
+          <h2 class="heading-m" id="sectionInboundRegister">入荷情報入力</h2>
           <hr class="section-divider">
-          <div class="history-table-wrapper">
-            <table class="schedule-table" id="userTable" aria-label="ユーザー一覧">
-              <thead>
-                <tr>
-                  <th scope="col">ログインID</th>
-                  <th scope="col">氏名</th>
-                  <th scope="col">権限</th>
-                  <th scope="col">ステータス</th>
-                  <th scope="col">操作</th>
-                </tr>
-              </thead>
-              <tbody id="userTableBody">
-              </tbody>
-            </table>
-          </div>
+          <form class="manual-form-grid" id="inboundRegisterForm" onsubmit="return false;">
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="inboundDate">入荷日 <span class="manual-form-required" aria-label="必須">*</span></label>
+              <input type="date" id="inboundDate" class="form-input" required>
+            </div>
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="inboundTime">入荷時刻</label>
+              <input type="time" id="inboundTime" class="form-input">
+            </div>
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="slipNo">伝票No <span class="manual-form-required" aria-label="必須">*</span></label>
+              <input type="text" id="slipNo" class="form-input" placeholder="例: T-1001" required>
+            </div>
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="supplier">入荷元</label>
+              <input type="text" id="supplier" class="form-input" placeholder="例: 佐々木商事">
+            </div>
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="itemCode">商品コード <span class="manual-form-required" aria-label="必須">*</span></label>
+              <input type="text" id="itemCode" class="form-input" placeholder="例: P-001" required>
+            </div>
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="itemName">商品名 <span class="manual-form-required" aria-label="必須">*</span></label>
+              <input type="text" id="itemName" class="form-input" placeholder="例: 商品A" required>
+            </div>
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="shelfLocation">棚ロケ <span class="manual-form-required" aria-label="必須">*</span></label>
+              <select id="shelfLocation" class="form-input" required>
+                <option value="">棚ロケを選択</option>
+              </select>
+            </div>
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="quantity">数量 <span class="manual-form-required" aria-label="必須">*</span></label>
+              <input type="number" id="quantity" class="form-input manual-form-qty" min="1" placeholder="1" required>
+            </div>
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="unitType">単位区分</label>
+              <select id="unitType" class="form-input">
+                <option value="">-</option>
+                <option value="pallet">パレット</option>
+                <option value="case">ケース</option>
+                <option value="ball">ボール</option>
+                <option value="piece">ピース</option>
+              </select>
+            </div>
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="lotNo">ロット番号</label>
+              <input type="text" id="lotNo" class="form-input" placeholder="例: LOT-2025-001">
+            </div>
+
+            <div class="manual-form-field">
+              <label class="manual-form-label" for="expiryDate">賞味期限</label>
+              <input type="date" id="expiryDate" class="form-input">
+            </div>
+
+            <div class="manual-form-field manual-form-field--full">
+              <label class="manual-form-label" for="note">特記事項</label>
+              <input type="text" id="note" class="form-input" placeholder="特記事項があれば入力してください">
+            </div>
+
+            <div class="manual-form-actions manual-form-field--full">
+              <button type="button" class="btn btn-default" onclick="submitInboundAndContinue()">登録して続ける</button>
+              <button type="button" class="btn btn-primary" onclick="submitInboundAndNavigate()">登録する</button>
+            </div>
+
+          </form>
         </section>
 
       </main>
@@ -179,8 +240,5 @@
 
   <script src="../static/js/sticky-notes.js"></script>
   <script src="../static/js/main.js"></script>
-  <script>
-    initUserList();
-  </script>
 </body>
 </html>

@@ -2302,6 +2302,32 @@ body {
   max-width: 480px;
 }
 
+/* === SCR-003 取引先定義 === */
+.supplier-search-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-100);
+  margin-bottom: var(--ds-space-200);
+}
+
+.upload-error-message {
+  margin-top: var(--ds-space-150);
+  padding: var(--ds-space-100) var(--ds-space-150);
+  background-color: var(--ds-background-danger);
+  color: var(--ds-text-danger);
+  border-radius: 3px;
+  font-size: 0.875rem;
+}
+
+.upload-success-banner {
+  margin-top: var(--ds-space-150);
+  padding: var(--ds-space-100) var(--ds-space-150);
+  background-color: var(--ds-background-success);
+  color: var(--ds-text-success);
+  border-radius: 3px;
+  font-size: 0.875rem;
+}
+
 .user-form-field {
   display: flex;
   flex-direction: column;
@@ -2576,6 +2602,9 @@ body {
 }
 
 .ds-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: var(--ds-space-200);
 }
 
