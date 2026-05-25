@@ -2761,11 +2761,10 @@ function renderInventoryTable() {
 
   var html = '';
   inventoryLocations.forEach(function(loc) {
-    var isExpandable = loc.status === 'done' || loc.status === 'approved';
     var isExpanded   = inventoryExpanded.has(loc.location);
     var canCheck     = loc.status === 'done';
     var rowClass     = 'is-location-row' + (isExpanded ? ' is-expanded' : '');
-    var cursor       = isExpandable ? 'cursor: pointer;' : 'cursor: default;';
+    var cursor       = 'cursor: pointer;';
 
     html += '<tr class="' + rowClass + '" data-location="' + loc.location + '" style="' + cursor + '">';
     html += '<td style="text-align: center;" onclick="event.stopPropagation()">';
@@ -2779,7 +2778,8 @@ function renderInventoryTable() {
     html += '<td>' + inventoryDiffBadge(loc) + '</td>';
     html += '</tr>';
 
-    if (isExpandable) {
+    {
+      var isPending = loc.status === 'pending';
       html += '<tr class="inventory-detail-row" data-detail-for="' + loc.location + '"';
       html += (isExpanded ? '' : ' style="display: none;"') + '>';
       html += '<td colspan="4"><div class="inventory-detail-inner">';
@@ -2792,16 +2792,25 @@ function renderInventoryTable() {
       html += '<th>単位区分</th>';
       html += '</tr></thead><tbody>';
       loc.items.forEach(function(item) {
-        var diff    = item.countQty - item.stockQty;
-        var diffStr = diff > 0 ? '+' + diff : String(diff);
-        var diffClass = diff !== 0 ? ' class="inventory-diff--warning"' : '';
+        var dash = String.fromCharCode(8212);
+        var countQtyCell, diffCell;
+        if (isPending) {
+          countQtyCell = dash;
+          diffCell     = '<td style="text-align: right;">' + dash + '</td>';
+        } else {
+          var diff    = item.countQty - item.stockQty;
+          var diffStr = diff > 0 ? '+' + diff : String(diff);
+          var diffClass = diff !== 0 ? ' class="inventory-diff--warning"' : '';
+          countQtyCell = item.countQty;
+          diffCell     = '<td style="text-align: right;"' + diffClass + '>' + diffStr + '</td>';
+        }
         html += '<tr>';
         html += '<td>' + item.itemCode + '</td>';
         html += '<td>' + item.itemName + '</td>';
         html += '<td>' + item.lotNo + '</td>';
-        html += '<td style="text-align: right;">' + item.countQty + '</td>';
+        html += '<td style="text-align: right;">' + countQtyCell + '</td>';
         html += '<td style="text-align: right;">' + item.stockQty + '</td>';
-        html += '<td style="text-align: right;"' + diffClass + '>' + diffStr + '</td>';
+        html += diffCell;
         html += '<td>' + item.unit + '</td>';
         html += '</tr>';
       });
@@ -2847,7 +2856,7 @@ function inventoryDiffBadge(loc) {
 
 function toggleInventoryDetail(location) {
   var loc = inventoryLocations.find(function(l) { return l.location === location; });
-  if (!loc || (loc.status !== 'done' && loc.status !== 'approved')) return;
+  if (!loc) return;
   if (inventoryExpanded.has(location)) {
     inventoryExpanded.delete(location);
   } else {

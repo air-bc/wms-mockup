@@ -20,7 +20,7 @@ wheels/
 *.py
 *.toml
 *.lock
-*.md
+# *.md
 *.xlsx
 *.zip
 *.csv
@@ -28,7 +28,7 @@ wheels/
 uv.lock
 .python-version
 .mcp.json
-CLAUDE.md
-GUIDE.md
+# CLAUDE.md
+# GUIDE.md
 README.md
 main.py
