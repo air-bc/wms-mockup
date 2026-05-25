@@ -10,11 +10,11 @@ wheels/
 .venv
 
 # 公開対象外（docs/ 以外はすべて除外）
-archive/
-scripts/
-templates/
-renew_templates/
-static/
+/archive/
+/scripts/
+/templates/
+/renew_templates/
+/static/
 .claude/
 .playwright-mcp/
 *.py
