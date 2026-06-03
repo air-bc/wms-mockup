@@ -39,36 +39,36 @@
 <!-- 実装すべき画面を列挙する。各画面の機能詳細は対応ファイルを参照すること -->
 <!-- ファイル名は renew_REQUIREMENTS_SCR-XXX.md の形式とする -->
 
-| 画面ID               | 画面名                                                                 | 概要                                                                                       | ステータス   | 詳細ファイル                                                   |
-| -------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------ | -------------------------------------------------------------- |
-| **【マスター定義】** |                                                                        |                                                                                            |              |                                                                |
-| SCR-001              | 棚ロケ定義                                                             | 棚ロケーション・ピッキング経路・バースを定義・管理する                                     | 要件定義済み | [renew_REQUIREMENTS_SCR-001.md](renew_REQUIREMENTS_SCR-001.md) |
-| SCR-002              | ~~アイテム定義~~ 商品マスタ [2026/06/01 画面名変更]                    | 入力CSVのセルとシステムDBフィールドのマッピング定義・雑コードテンプレートを管理する        | 要件定義済み | [renew_REQUIREMENTS_SCR-002.md](renew_REQUIREMENTS_SCR-002.md) |
-| SCR-003              | ~~取引先情報定義~~ ~~取引先定義~~ 取引先マスタ [2026/06/01 画面名変更] | 取引先情報を定義・管理する                                                                 | 要件定義済み | [renew_REQUIREMENTS_SCR-003.md](renew_REQUIREMENTS_SCR-003.md) |
-| **【入荷管理】**     |                                                                        |                                                                                            |              |                                                                |
-| SCR-004              | 入荷予定一覧                                                           | 入荷予定の一覧を表示・検索する                                                             | 要件定義済み | [renew_REQUIREMENTS_SCR-004.md](renew_REQUIREMENTS_SCR-004.md) |
-| SCR-005              | 　› 入荷予定登録                                                       | 入荷予定CSVをアップロードして一括登録する（入荷予定一覧のサブ画面）                        | 要件定義済み | [renew_REQUIREMENTS_SCR-005.md](renew_REQUIREMENTS_SCR-005.md) |
-| SCR-006              | 　› 入荷予定確定                                                       | 入荷予定を確認・編集（棚ロケ・数量変更、行取り消し）して確定する（入荷予定一覧のサブ画面） | 要件定義済み | [renew_REQUIREMENTS_SCR-006.md](renew_REQUIREMENTS_SCR-006.md) |
-| SCR-007              | 　› 入荷登録                                                           | 実際の入荷情報（棚ロケ指定・確定情報）を手動入力で登録する（入荷予定一覧のサブ画面）       | 要件定義済み | [renew_REQUIREMENTS_SCR-007.md](renew_REQUIREMENTS_SCR-007.md) |
-| SCR-008              | 入荷履歴                                                               | 入荷実績の履歴を参照する                                                                   | 要件定義済み | [renew_REQUIREMENTS_SCR-008.md](renew_REQUIREMENTS_SCR-008.md) |
-| **【出荷管理】**     |                                                                        |                                                                                            |              |                                                                |
-| SCR-009              | 出荷予定一覧                                                           | 出荷予定の一覧を表示・検索する                                                             | 要件定義済み | [renew_REQUIREMENTS_SCR-009.md](renew_REQUIREMENTS_SCR-009.md) |
-| SCR-010              | 　› 出荷予定登録                                                       | 出荷予定を登録する（出荷予定一覧のサブ画面）                                               | 要件定義済み | [renew_REQUIREMENTS_SCR-010.md](renew_REQUIREMENTS_SCR-010.md) |
-| SCR-011              | 　› 引き当てチェック                                                   | 出荷予定に対する在庫引き当て結果を確認する（出荷予定一覧のサブ画面）                       | 要件定義済み | [renew_REQUIREMENTS_SCR-011.md](renew_REQUIREMENTS_SCR-011.md) |
-| SCR-012              | 　› 出荷確定                                                           | 出荷予定を確認・編集して確定する（出荷予定一覧のサブ画面）                                 | 要件定義済み | [renew_REQUIREMENTS_SCR-012.md](renew_REQUIREMENTS_SCR-012.md) |
-| SCR-013              | 出荷履歴                                                               | 出荷実績の履歴を参照する                                                                   | 要件定義済み | [renew_REQUIREMENTS_SCR-013.md](renew_REQUIREMENTS_SCR-013.md) |
-| **【在庫管理】**     |                                                                        |                                                                                            |              |                                                                |
-| SCR-014              | 在庫一覧（ロット単位）                                                 | ロット単位の在庫一覧を表示・検索する                                                       | 要件定義済み | [renew_REQUIREMENTS_SCR-014.md](renew_REQUIREMENTS_SCR-014.md) |
-| SCR-015              | 　› 在庫明細（棚ロケ単位）                                             | 棚ロケ単位の在庫明細を表示する（在庫一覧のサブ画面）                                       | 要件定義済み | [renew_REQUIREMENTS_SCR-015.md](renew_REQUIREMENTS_SCR-015.md) |
-| SCR-016              | 在庫調整                                                               | 在庫数量の手動調整を行う                                                                   | 要件定義前   | [renew_REQUIREMENTS_SCR-016.md](renew_REQUIREMENTS_SCR-016.md) |
-| SCR-017              | 棚ロケ移動登録                                                         | 棚ロケ間の在庫移動を登録する                                                               | 要件定義済み | [renew_REQUIREMENTS_SCR-017.md](renew_REQUIREMENTS_SCR-017.md) |
-| SCR-018              | 棚ロケ移動履歴                                                         | 棚ロケ間の在庫移動履歴を参照する                                                           | 要件定義済み | [renew_REQUIREMENTS_SCR-018.md](renew_REQUIREMENTS_SCR-018.md) |
-| **【棚卸】**         |                                                                        |                                                                                            |              |                                                                |
-| SCR-019              | 棚卸管理                                                               | 棚卸の登録・管理を行う                                                                     | 要件定義済み | [renew_REQUIREMENTS_SCR-019.md](renew_REQUIREMENTS_SCR-019.md) |
-| SCR-020              | 棚卸数更新履歴                                                         | 棚卸による在庫数更新の履歴を参照する                                                       | 要件定義前   | renew_REQUIREMENTS_SCR-020.md                                  |
-| **【管理者機能】**   |                                                                        |                                                                                            |              |                                                                |
-| ADM-001              | ユーザー一覧                                                           | ユーザーの一覧表示・有効/無効切替・削除（管理者のみアクセス可）                            | 要件定義済み | [renew_REQUIREMENTS_ADM-001.md](renew_REQUIREMENTS_ADM-001.md) |
-| ADM-002              | 　› ユーザー登録・編集                                                 | ユーザーの新規追加・既存ユーザーの権限変更（ADM-001のサブ画面）                            | 要件定義済み | [renew_REQUIREMENTS_ADM-002.md](renew_REQUIREMENTS_ADM-002.md) |
+| 画面ID               | 画面名                                                                      | 概要                                                                                       | ステータス   | 詳細ファイル                                                   |
+| -------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------ | -------------------------------------------------------------- |
+| **【マスター定義】** |                                                                             |                                                                                            |              |                                                                |
+| SCR-001              | 棚ロケ定義                                                                  | 棚ロケーション・ピッキング経路・バースを定義・管理する                                     | 要件定義済み | [renew_REQUIREMENTS_SCR-001.md](renew_REQUIREMENTS_SCR-001.md) |
+| SCR-002              | ~~アイテム定義~~ 商品マスタ [2026/06/01 画面名変更]                         | 入力CSVのセルとシステムDBフィールドのマッピング定義・雑コードテンプレートを管理する        | 要件定義済み | [renew_REQUIREMENTS_SCR-002.md](renew_REQUIREMENTS_SCR-002.md) |
+| SCR-003              | ~~取引先情報定義~~ ~~取引先定義~~ 取引先マスタ [2026/06/01 画面名変更]      | 取引先情報を定義・管理する                                                                 | 要件定義済み | [renew_REQUIREMENTS_SCR-003.md](renew_REQUIREMENTS_SCR-003.md) |
+| **【入荷管理】**     |                                                                             |                                                                                            |              |                                                                |
+| SCR-004              | 入荷予定一覧                                                                | 入荷予定の一覧を表示・検索する                                                             | 要件定義済み | [renew_REQUIREMENTS_SCR-004.md](renew_REQUIREMENTS_SCR-004.md) |
+| SCR-005              | 　› 入荷予定登録                                                            | 入荷予定CSVをアップロードして一括登録する（入荷予定一覧のサブ画面）                        | 要件定義済み | [renew_REQUIREMENTS_SCR-005.md](renew_REQUIREMENTS_SCR-005.md) |
+| SCR-006              | 　› 入荷予定確定                                                            | 入荷予定を確認・編集（棚ロケ・数量変更、行取り消し）して確定する（入荷予定一覧のサブ画面） | 要件定義済み | [renew_REQUIREMENTS_SCR-006.md](renew_REQUIREMENTS_SCR-006.md) |
+| SCR-007              | 　› 入荷登録                                                                | 実際の入荷情報（棚ロケ指定・確定情報）を手動入力で登録する（入荷予定一覧のサブ画面）       | 要件定義済み | [renew_REQUIREMENTS_SCR-007.md](renew_REQUIREMENTS_SCR-007.md) |
+| SCR-008              | 入荷履歴                                                                    | 入荷実績の履歴を参照する                                                                   | 要件定義済み | [renew_REQUIREMENTS_SCR-008.md](renew_REQUIREMENTS_SCR-008.md) |
+| **【出荷管理】**     |                                                                             |                                                                                            |              |                                                                |
+| SCR-009              | 出荷予定一覧                                                                | 出荷予定の一覧を表示・検索する                                                             | 要件定義済み | [renew_REQUIREMENTS_SCR-009.md](renew_REQUIREMENTS_SCR-009.md) |
+| SCR-010              | 　› 出荷予定登録                                                            | 出荷予定を登録する（出荷予定一覧のサブ画面）                                               | 要件定義済み | [renew_REQUIREMENTS_SCR-010.md](renew_REQUIREMENTS_SCR-010.md) |
+| SCR-011              | 　› 引き当てチェック                                                        | 出荷予定に対する在庫引き当て結果を確認する（出荷予定一覧のサブ画面）                       | 要件定義済み | [renew_REQUIREMENTS_SCR-011.md](renew_REQUIREMENTS_SCR-011.md) |
+| SCR-012              | 　› 出荷確定                                                                | 出荷予定を確認・編集して確定する（出荷予定一覧のサブ画面）                                 | 要件定義済み | [renew_REQUIREMENTS_SCR-012.md](renew_REQUIREMENTS_SCR-012.md) |
+| SCR-013              | 出荷履歴                                                                    | 出荷実績の履歴を参照する                                                                   | 要件定義済み | [renew_REQUIREMENTS_SCR-013.md](renew_REQUIREMENTS_SCR-013.md) |
+| **【在庫管理】**     |                                                                             |                                                                                            |              |                                                                |
+| SCR-014              | ~~在庫一覧（ロット単位）~~ 在庫管理 [2026/06/03 画面名変更]                 | 商品コード×ロット番号×賞味期限×入庫日単位の在庫一覧を表示・検索する                        | 要件定義済み | [renew_REQUIREMENTS_SCR-014.md](renew_REQUIREMENTS_SCR-014.md) |
+| SCR-015              | 　› ~~在庫明細（棚ロケ単位）~~ 在庫管理（棚ロケ別） [2026/06/03 画面名変更] | 棚ロケ単位の在庫一覧を表示する（在庫管理のサブ画面）                                       | 要件定義済み | [renew_REQUIREMENTS_SCR-015.md](renew_REQUIREMENTS_SCR-015.md) |
+| SCR-016              | 在庫調整                                                                    | 在庫数量の手動調整を行う                                                                   | 要件定義前   | [renew_REQUIREMENTS_SCR-016.md](renew_REQUIREMENTS_SCR-016.md) |
+| SCR-017              | 棚ロケ移動登録                                                              | 棚ロケ間の在庫移動を登録する                                                               | 要件定義済み | [renew_REQUIREMENTS_SCR-017.md](renew_REQUIREMENTS_SCR-017.md) |
+| SCR-018              | 棚ロケ移動履歴                                                              | 棚ロケ間の在庫移動履歴を参照する                                                           | 要件定義済み | [renew_REQUIREMENTS_SCR-018.md](renew_REQUIREMENTS_SCR-018.md) |
+| **【棚卸】**         |                                                                             |                                                                                            |              |                                                                |
+| SCR-019              | 棚卸管理                                                                    | 棚卸の登録・管理を行う                                                                     | 要件定義済み | [renew_REQUIREMENTS_SCR-019.md](renew_REQUIREMENTS_SCR-019.md) |
+| SCR-020              | 棚卸数更新履歴                                                              | 棚卸による在庫数更新の履歴を参照する                                                       | 要件定義前   | renew_REQUIREMENTS_SCR-020.md                                  |
+| **【管理者機能】**   |                                                                             |                                                                                            |              |                                                                |
+| ADM-001              | ユーザー一覧                                                                | ユーザーの一覧表示・有効/無効切替・削除（管理者のみアクセス可）                            | 要件定義済み | [renew_REQUIREMENTS_ADM-001.md](renew_REQUIREMENTS_ADM-001.md) |
+| ADM-002              | 　› ユーザー登録・編集                                                      | ユーザーの新規追加・既存ユーザーの権限変更（ADM-001のサブ画面）                            | 要件定義済み | [renew_REQUIREMENTS_ADM-002.md](renew_REQUIREMENTS_ADM-002.md) |
 
 <!-- 付箋メモ機能（STICKY）は画面ではなく全画面横断機能のため §3.2 で管理する -->
 <!-- ADM- 画面はサイドメニューではなく、ヘッダー右上のユーザーエリアからアクセスする -->
@@ -123,8 +123,8 @@
     › 出荷確定（SCR-012）
   出荷履歴（SCR-013）
 【在庫管理】
-  在庫一覧（SCR-014）
-    › 在庫明細（SCR-015）
+  在庫管理（SCR-014）
+    › 在庫管理（棚ロケ別）（SCR-015）
   在庫調整（SCR-016）
   棚ロケ移動登録（SCR-017）
   棚ロケ移動履歴（SCR-018）
@@ -220,3 +220,5 @@
 | 2026/05/25 | -      | SCR-003 の画面名を「取引先情報定義」から「取引先定義」に変更、要件定義済みに更新                                                 |
 | 2026/06/01 | -      | SCR-002 の画面名を「アイテム定義」→「商品マスタ」に変更                                                                          |
 | 2026/06/01 | -      | SCR-003 の画面名を「取引先定義」→「取引先マスタ」に変更                                                                          |
+| 2026/06/03 | -      | SCR-014 の画面名を「在庫一覧（ロット単位）」→「在庫管理」に変更、概要・詳細ファイルを更新                                        |
+| 2026/06/03 | -      | SCR-015 の画面名を「在庫明細（棚ロケ単位）」→「在庫管理（棚ロケ別）」に変更、概要・詳細ファイルを更新                            |
